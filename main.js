@@ -4,13 +4,13 @@ console.log("arcgising.....................")
 
 const FROM = []
 const TO = []
-const URL_XZQ = "http://120.78.229.91:6080/arcgis/rest/services//YTH/xzq/MapServer/0"
-const URL_TOWN = "http://120.78.229.91:6080/arcgis/rest/services//blmap/zjjx/MapServer/0"
-const URL_VILLAGE = "http://120.78.229.91:6080/arcgis/rest/services//blmap/cjjx/MapServer/0"
-const URL_2016 = "http://120.78.229.91:6080/arcgis/rest/services//blmap/2016tdlyxz/MapServer/0"
-const URL_2017 = "http://120.78.229.91:6080/arcgis/rest/services//blmap/tdlyxz_2017/MapServer/0"
-// const URL_SDYS = "http://120.78.229.91:6080/arcgis/rest/services//YTH/sdys/MapServer/0"
-const URL_SDYS = "http://120.78.229.91:6080/arcgis/rest/services/blmap/yzt__sdys/MapServer/0"
+const URL_XZQ = ""
+const URL_TOWN = ""
+const URL_VILLAGE = ""
+const URL_2016 = ""
+const URL_2017 = ""
+// const URL_SDYS = ""
+const URL_SDYS = ""
 
 var arcgis = new ArcGISJS()
 // console.log(arcgis)
