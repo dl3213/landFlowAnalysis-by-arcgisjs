@@ -1,6 +1,5 @@
 // import { from } from "_array-flatten@2.1.2@array-flatten"
 
-console.log("arcgising.....................")
 
 const FROM = []
 const TO = []
@@ -13,21 +12,16 @@ const URL_2017 = ""
 const URL_SDYS = ""
 
 var arcgis = new ArcGISJS()
-// console.log(arcgis)
 
 var dlNum = ["建设用地", "耕地", "其它农用地", "未利用地"]
 var XZQList = []
 
 // var ret = arcgis.querySync(URL_TOWN, false, null, "1=1")
-// console.log(ret)
 
 // arcgis.queryAsync(URL_2017, false, null, "DLMC = '水田'", function (res) {
 // 	if (res) {
-// 		console.log(res)
 // 	}
 // }, function (err) {
-// 	console.log("testing query erryyyyyyyyyyyyyyyy.......")
-// 	console.log(err)
 // })
 
 {//异步
@@ -41,7 +35,6 @@ var XZQList = []
 		}
 		var counter = 0
 		var xList = unique(xzqList)
-		console.log(xList)
 
 		$("#xzqList").html("")
 		for (var i = 0; i < xList.length; i++) {
@@ -49,13 +42,10 @@ var XZQList = []
 		}
 
 		$("#xzqList").on("click", "button", function () {
-			console.log($(this).attr("index"))
-			console.log($(this).html())
 			var xzqmc = $(this).attr("name")
 			var xzqdm = $(this).attr("index")
 			var xzq = {}
 			arcgis.queryAsync(URL_TOWN, true, null, "XZQDM = '" + xzqdm + "'", function (res) {
-				// console.log(res)
 				var gg = []
 				for (var i = 0; i < res.features.length; i++) {
 					gg.push((res.features[i].geometry))
@@ -71,59 +61,37 @@ var XZQList = []
 				// item.area = bArea
 				// XZQList.push(obj)
 				// if (XZQList.length === 29) {
-				// 	console.log(XZQList)
 				// 	// saveJSON(XZQList, "xzqList.json")
 				// }
-				// console.log(index)
-				console.log(xzq)
-				// console.log(xzq.XZQMC)
 				// var _sd
 				// var _2017
 				// var _2016
-				// console.log(arcgis.planarArea(obj.geometry)*0.0015)
 				arcgis.queryAsync4dl(URL_SDYS, true, bGeo, "1=1", function (sdSet) {
 					if (sdSet) {
-						console.log(xzq.XZQMC + "in sd")
-						// console.log(sdSet)
 						var groupInsd = groupByDLBM(bGeo, sdSet.features, arcgis)
 						var get4group = return4Group(groupInsd, arcgis)
 
-						console.log(groupInsd)
-						console.log(get4group)
 
 						var sdJson = getGroupJson(groupInsd)
-						// console.log(sdJson)
 						xzq.DL_sd = sdJson
 
 						arcgis.queryAsync4dl(URL_2017, true, bGeo, "1=1", function (_2017Set) {
 							if (_2017Set) {
-								console.log(xzq.XZQMC + "in 2017")
-								// console.log(_2017Set)
 								var groupIn2017 = groupByDLBM(bGeo, _2017Set.features, arcgis)
 								var get4groupIn2017 = return4Group(groupIn2017, arcgis)
 
-								console.log(groupIn2017)
-								console.log(get4groupIn2017)
 
 								var json2017 = getGroupJson(groupIn2017)
-								// console.log(json2017)
 								xzq.DL_2017 = json2017
 
 								arcgis.queryAsync4dl(URL_2016, true, bGeo, "1=1", function (_2016Set) {
 									if (_2016Set) {
-										console.log(xzq.XZQMC + "in 2016")
-										// console.log(_2016Set)
 										var groupIn2016 = groupByDLBM(bGeo, _2016Set.features, arcgis)
 										var get4groupIn2016 = return4Group(groupIn2016, arcgis)
 		
-										console.log(groupIn2016)
-										console.log(get4groupIn2016)
 		
 										var json2016 = getGroupJson(groupIn2016)
-										// console.log(json2016)
 										xzq.DL_2016 = json2016
-		
-										// console.log(xzq)
 		
 										var from2016tosd = from2sd4xzq(get4group, get4groupIn2016, arcgis)
 										xzq.from2016 = from2016tosd
@@ -131,27 +99,17 @@ var XZQList = []
 										var from2017tosd = from2sd4xzq(get4group, get4groupIn2017, arcgis)
 										xzq.from2017 = from2017tosd
 		
-										console.log(xzq)
 										saveJSON(xzq, xzq.XZQDM + ".json")
 									}
 								}, function (err) {
-									console.log(xzq.XZQDM + xzq.XZQMC + "in 2016 ???")
-									console.log("get 2016 query erryyyyyyyyyyyyyyyy.......")
-									console.log(err)
 								})
 
 							}
 						}, function (err) {
-							console.log(xzq.XZQDM + xzq.XZQMC + "in 2017 ???")
-							console.log("get 2017 query erryyyyyyyyyyyyyyyy.......")
-							console.log(err)
 						})
 
 					}
 				}, function (err) {
-					console.log(xzq.XZQDM + xzq.XZQMC + "in sd ???")
-					console.log("get SDYS query erryyyyyyyyyyyyyyyy.......")
-					console.log(err)
 				})
 
 				// setInterval(function () {
@@ -161,14 +119,11 @@ var XZQList = []
 				// 	clearInterval()
 				// }
 			}, function (err) {
-				console.log("get fullXZQDATA query erryyyyyyyyyyyyyyyy.......")
-				console.log(err)
 			})
 		})
 		// reCallback(xList, counter)
 		// xList.forEach((item, index) => {
 		// 	arcgis.queryAsync(URL_TOWN, true, null, "XZQDM = '" + item.XZQDM + "'", function (res) {
-		// 		// console.log(res)
 		// 		var gg = []
 		// 		for (var i = 0; i < res.features.length; i++) {
 		// 			gg.push((res.features[i].geometry))
@@ -184,30 +139,19 @@ var XZQList = []
 		// 		// item.area = bArea
 		// 		XZQList.push(obj)
 		// 		// if (XZQList.length === 29) {
-		// 		// 	console.log(XZQList)
 		// 		// 	// saveJSON(XZQList, "xzqList.json")
 		// 		// }
-		// 		// console.log(index)
-		// 		console.log(obj)
-		// 		// console.log(arcgis.planarArea(obj.geometry)*0.0015)
 		// 		// arcgis.queryAsync(URL_SDYS, true, obj.geometry, "1=1", function (sdSet) {
 		// 		// 	if (sdSet) {
-		// 		// 		console.log(obj.XZQMC)
-		// 		// 		// console.log(sdSet)
 		// 		// 		// var groupInsd = groupByDLBM(obj.geometry, sdSet.features, arcgis)
 		// 		// 		// var get4group = return4Group(groupInsd[1], groupInsd[0], arcgis)
 
-		// 		// 		// console.log(groupInsd)
-		// 		// 		// console.log(get4group)
 
 
 		// 		// 		// arcgis.queryAsync(URL_2016, true, obj.geometry, "1=1", function (pastSet) {
 		// 		// 		// 	if (pastSet) {
 		// 		// 		// 		var groupIn20 = groupByDLBM(obj.geometry, pastSet.features, arcgis)
 		// 		// 		// 		var get4groupIn20 = return4Group(groupIn20[1], groupIn20[0], arcgis)
-
-		// 		// 		// 		console.log(groupIn20)
-		// 		// 		// 		console.log(get4groupIn20)
 
 		// 		// 		// 		counter++
 		// 		// 		// 		if (counter === xList.length) {
@@ -216,15 +160,9 @@ var XZQList = []
 
 		// 		// 		// 	}
 		// 		// 		// }, function (err) {
-		// 		// 		// 	console.log(obj.XZQDM + obj.XZQMC + "in 2016 ???")
-		// 		// 		// 	console.log("get 2016 query erryyyyyyyyyyyyyyyy.......")
-		// 		// 		// 	console.log(err)
 		// 		// 		// })
 		// 		// 	}
 		// 		// }, function (err) {
-		// 		// 	console.log(obj.XZQDM + obj.XZQMC + "in sd ???")
-		// 		// 	console.log("get SDYS query erryyyyyyyyyyyyyyyy.......")
-		// 		// 	console.log(err)
 		// 		// })
 
 		// 		// setInterval(function () {
@@ -234,21 +172,16 @@ var XZQList = []
 		// 		// 	clearInterval()
 		// 		// }
 		// 	}, function (err) {
-		// 		console.log("get fullXZQDATA query erryyyyyyyyyyyyyyyy.......")
-		// 		console.log(err)
 		// 	})
 		// })
 
 
 	}, function (err) {
-		console.log("get xzqDATA query erryyyyyyyyyyyyyyyy.......")
-		console.log(err)
 	})
 }
 
 // { //同步
 // 	var tRet = query2URL(URL_TOWN, false, null, "1=1")
-// 	console.log(tRet)
 // 	var xzqList = []
 // 	for (var i = 0; i < tRet.features.length; i++) {
 // 		var obj = {}
@@ -258,7 +191,6 @@ var XZQList = []
 // 	}
 
 // 	var xList = unique(xzqList)
-// 	console.log(xList)
 
 // 	xList.forEach((item, index) => {
 // 		var res = query2URL(URL_TOWN, true, null, "XZQDM = '" + item.XZQDM + "'")
@@ -270,18 +202,14 @@ var XZQList = []
 // 		// 	tp:-1,
 // 		// 	yg:4526
 // 		// }
-// 		console.log(res)
 
 // 		var gg = []
 // 		for (var i = 0; i < res.features.length; i++) {
 // 			// res.features[i].geometry.spatialReference.wkid = 4526
 // 			gg.push((res.features[i].geometry))
-// 			// console.log(arcgis.planarArea(res.features[i].geometry))
 // 		}
 // 		var bGeo = arcgis.union(gg)
-// 		// console.log(gg)
 // 		// geometryService.union(gg,function(r){
-// 		//     console.log(r)
 // 		// })
 // 		var bArea = arcgis.planarArea(bGeo)
 // 		var obj = {
@@ -293,12 +221,9 @@ var XZQList = []
 // 		// item.area = bArea
 // 		XZQList.push(obj)
 // 		// if (XZQList.length === 29) {
-// 		//     console.log(XZQList)
 // 		//     // saveJSON(XZQList, "xzqList.json")
 // 		// }
 
-// 		console.log(obj)
-// 		// console.log(arcgis.planarArea(obj.geometry)*0.0015)
 // 	})
 // }
 
@@ -306,11 +231,8 @@ function reCallback(xList, counter) {
 	if (counter >= xList.length) {
 		return
 	} else {
-		console.log(counter)
-		// console.log(xList[counter])
 		// arcgis.queryAsync(URL_SDYS, true, xList[counter].geometry, "1=1", function (sdSet){
 		// 	if(sdSet){
-		// 		console.log(sdSet)
 		// 	}
 		// })
 
@@ -364,13 +286,10 @@ function query2URL(url, boolean, geometry, where) {
 	//     outFields:"*",
 	//     returnGeometry:false
 	// }
-	// console.log(formdata)
 	xhr.send(formdata)
 	if (xhr.status === 200) {
-		// console.log(JSON.parse(xhr.response).features)
 		return JSON.parse(xhr.response)
 	} else {
-		console.log("queryError")
 	}
 }
 function saveJSON(data, filename) {
@@ -418,7 +337,6 @@ function ArcGISJS() {
 					if (res) {
 						callback(res)
 					} else {
-						console.log("no res back")
 					}
 				}, function (err) {
 					if (err) {
@@ -444,7 +362,6 @@ function ArcGISJS() {
 					if (res) {
 						callback(res)
 					} else {
-						console.log("no res back")
 					}
 				}, function (err) {
 					if (err) {
@@ -467,8 +384,6 @@ function ArcGISJS() {
 				// 	wkid: 4526
 				// })
 				featureSet = queryTask.execute(para)
-				// console.log(queryTask.execute(para))
-				console.log(featureSet)
 				return featureSet
 			})
 	};
@@ -549,12 +464,10 @@ function ArcGISJS() {
 		) {
 			simplifyGeo = geometryEngine.simplify(geo)
 		})
-		// console.log(area)
 		return simplifyGeo;
 	};
 }
 function return4Group(groups, arcgis) {
-	// console.log(groups)
 
 	var landType0 = [],
 		landType1 = [],
@@ -565,7 +478,6 @@ function return4Group(groups, arcgis) {
 		interType2 = [],
 		interType3 = []
 	for (var i = 0; i < groups[0].length; i++) {
-		// console.log(groups[0][i][0].attributes.DLMC)
 		switch (groups[0][i][0].attributes.DLMC) {
 			case '村庄':
 				landType0.push(groups[0][i]);
@@ -801,7 +713,6 @@ function return4Group(groups, arcgis) {
 				interType3.push(groups[1][i]);
 				break
 			default:
-				console.log("no in groups???:" + groups[0][i][0].attributes.DLMC)
 		}
 	}
 
@@ -817,8 +728,6 @@ function return4Group(groups, arcgis) {
 	interGroup.push(interType2)
 	interGroup.push(interType3)
 
-	// console.log(group)
-	// console.log(interGroup)
 
 	var area = [0, 0, 0, 0]
 	for (var i = 0; i < interGroup.length; i++) {
@@ -832,12 +741,9 @@ function return4Group(groups, arcgis) {
 			}
 		}
 	}
-	// console.log(area)
 	return [group, interGroup, area]
 }
 function groupByDLBM(geometry, fSet, arcgis) {
-	// console.log(geometry)
-	// console.log(fSet)
 	var list = fSet,
 		flag = 0,
 		groups = []
@@ -859,7 +765,6 @@ function groupByDLBM(geometry, fSet, arcgis) {
 			groups.push(arr2)
 		}
 	}
-	// console.log(groups)
 
 	var interGeos = []
 	// var interGeo = []
@@ -871,15 +776,12 @@ function groupByDLBM(geometry, fSet, arcgis) {
 		interGeos.push(yGeos)
 		// interGeo.push(arcgis.union(yGeos))
 	}
-	// console.log(interGeos)
-	// console.log(interGeo)
 
 	var interArr = []
 	for (var i = 0; i < interGeos.length; i++) {
 		var Geos = arcgis.intersect(interGeos[i], geometry)
 		interArr.push(Geos)
 	}
-	// console.log(interArr)
 
 	var interA = []
 	for (var i = 0; i < interArr.length; i++) {
@@ -893,7 +795,6 @@ function groupByDLBM(geometry, fSet, arcgis) {
 		}
 		interA.push(interB)
 	}
-	// console.log(interA)
 
 	var areaInGroup = []
 	for (var i = 0; i < interA.length; i++) {
@@ -908,7 +809,6 @@ function groupByDLBM(geometry, fSet, arcgis) {
 		}
 		areaInGroup.push(areaIn)
 	}
-	// console.log(areaInGroup)
 	// var geoInGroup =[]
 	// var areaInGroup = []
 	// for (var i = 0; i < interArr.length; i++) {
@@ -916,8 +816,6 @@ function groupByDLBM(geometry, fSet, arcgis) {
 	// 	geoInGroup.push(areaIn)
 	// 	areaInGroup.push(arcgis.planarArea(areaIn))
 	// }
-	// console.log(geoInGroup)
-	// console.log(areaInGroup)
 
 	var allArea = 0
 	for (var i = 0; i < areaInGroup.length; i++) {
@@ -950,7 +848,6 @@ function getFrom2Byxzq(union_20, _sdData, arcgis) {
 		}
 		inf.push(z1)
 	}
-	// console.log(inf)
 
 	var finInf = []
 	for (var a = 0; a < inf.length; a++) {
@@ -980,34 +877,24 @@ function getFrom2Byxzq(union_20, _sdData, arcgis) {
 		}
 		finInf.push(inInf)
 	}
-	// console.log(finInf)
 
 	return finInf
 }
 function getUnionInEachGroup(data, arcgis) {
-	// console.log(data[1])
 	var unions = []
 	for (var i = 0; i < data.length; i++) {
 		var union
 		if (data[i].length > 0) {
 			union = arcgis.union(data[i])
-			// console.log(arcgis.planarArea(union,"square-meters")* 0.0015)
 		} else {
 			union = null
-			// console.log(0)
 		}
 		unions.push(union)
-		// console.log(arcgis.planarArea(union))
 	}
-	// console.log(unions)
-	// console.log(arcgis.planarArea())
 	return unions
 }
 function from2sd4xzq(sd, _2016, arcgis) {
-	// console.log(sd)
-	// console.log(_2016)
 
-	console.log("from2 ing...............")
 	var from2 = []
 
 	for (var i = 0; i < _2016[1].length; i++) {
@@ -1015,7 +902,6 @@ function from2sd4xzq(sd, _2016, arcgis) {
 		if (_2016[1][i]) {
 			for (var i2 = 0; i2 < sd[1].length; i2++) {
 				var z2 = []
-				// console.log("食堂泼辣酱。。。咋瓦鲁多！！！")
 				if (sd[1][i2]) {
 
 					for (var j = 0; j < _2016[1][i].length; j++) {
@@ -1027,7 +913,6 @@ function from2sd4xzq(sd, _2016, arcgis) {
 										if (_2016[1][i][j][k]) {
 											for (var k2 = 0; k2 < sd[1][i2][j2].length; k2++) {
 												if (sd[1][i2][j2][k2]) {
-													// console.log("欧拉 ! ! !")
 													var g1 = arcgis.intersect(sd[1][i2][j2][k2], _2016[1][i][j][k])
 													if (g1) {
 														z3 += arcgis.planarArea(g1, "square-meters") * 0.0015
@@ -1049,7 +934,6 @@ function from2sd4xzq(sd, _2016, arcgis) {
 						}
 					}
 				}
-				// console.log(z2)
 				var fruitTotal = [];
 
 				var obj4U = {};
@@ -1058,9 +942,7 @@ function from2sd4xzq(sd, _2016, arcgis) {
 					obj4U[item.DLBM].push(item);
 				});
 
-				// console.log(obj4U);
 				var arr2 = Object.keys(obj4U);
-				// console.log(arr2)
 				arr2.forEach(nameItem => {
 					var count = 0
 					obj4U[nameItem].forEach(item => {
@@ -1069,14 +951,11 @@ function from2sd4xzq(sd, _2016, arcgis) {
 					fruitTotal.push({ 'DLBM': nameItem, 'DLMC': obj4U[nameItem][0].DLMC, 'area': count })
 				});
 
-				// console.log(fruitTotal);
 				z1.push(fruitTotal)
-				console.log(i + " [201x 2 sd] " + i2 + "---" + "ko no dio da !!!")
 			}
 			from2.push(z1)
 		}
 
 	}
-	// console.log(from2)
 	return from2
 }
